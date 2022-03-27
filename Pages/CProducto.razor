@@ -1,0 +1,342 @@
+@using ExamenBlazor.Entidades
+@using ExamenBlazor.BLL
+
+@page "/CProducto"
+
+
+<EditForm Model="listaProducto">
+    <DataAnnotationsValidator />
+
+    <div class="card" style="box-shadow: 8px 8px rgba(0, 0, 0, 0.26);">
+
+        <div class="card-header">
+            <h4 style="text-align: center;">Consulta de productos</h4>
+        </div>
+
+        <div class="card-body">
+            <form>
+                <div class="input-group d-flex align-items-end">
+
+                    <div class="container">
+
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" @bind-value="@checkBoxFechaProducto">
+                            <label class="form-check-label">Buscar por fecha</label>
+                        </div>
+
+                        <div>
+                            <label>Desde</label>
+                            <InputDate class="form-control" @bind-Value="fechaDesdeProducto" name="DataPickerDesde" />
+                        </div>
+
+                        <div>
+                            <label>Hasta</label>
+                            <InputDate class="form-control" @bind-Value="fechaHastaProducto" name="DataPickerDesde" />
+                        </div>
+                    </div>
+
+
+                    <InputSelect class="form-control col-2" @bind-Value="filtroProducto">
+                        <option value="1">ID</option>
+                        <option value="2">Descripcion</option>
+                    </InputSelect>
+
+                    <div class="flex-fill mx-2">
+                        <label>Busqueda</label>
+                        <InputText class="form-control" @bind-Value="CriterioProducto" />
+                    </div>
+
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="BuscarProducto"><span
+                            class="oi oi-magnifying-glass"></span>Buscar</button>
+                </div>
+            </form>
+        </div>
+        <table class="table table-bordered" style="box-shadow: 1px 6px rgba(0, 0, 0, 0.2);">
+            <thead class="thead">
+                <tr class="table">
+                    <td><b>ID</b></td>
+                    <td><b>Descripción</b></td>
+                    <td><b>Existencia</b></td>
+                    <td><b>Costo</b></td>
+                    <td><b>Valor Inventario</b></td>
+                    <td><b>Precio</b></td>
+                    <td><b>Fecha expiraci&oacuten</b></td>
+                    <td><b>Ganancia</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in listaProducto)
+                {
+                    <tr>
+                        <td>@item.ProductoId</td>
+                        <td>@item.Descripcion</td>
+                        <td>@item.Existencia</td>
+                        <td>RD$@item.Costo</td>
+                        <td>RD$@item.ValorInventario</td>
+                        <td>RD$@item.Precio</td>
+                        <td>@item.FechaExpiracion</td>
+                        <td>@item.Ganancia%</td>
+                        <td><a class="btn btn-sm btn-outline-primary oi oi-eye" href=@($"RProducto/{item.ProductoId}")></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</EditForm>
+
+
+
+<EditForm Model="listaEmpacado">
+    <DataAnnotationsValidator />
+
+    <div class="card" style="box-shadow: 8px 8px rgba(0, 0, 0, 0.26);">
+
+        <div class="card-header">
+            <h4 style="text-align: center;">Consulta de productos empacados</h4>
+        </div>
+
+        <div class="card-body">
+            <form>
+                <div class="input-group d-flex align-items-end">
+
+                    <div class="container">
+
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" @bind-value="@checkBoxFechaEmpacado">
+                            <label class="form-check-label">Buscar por fecha</label>
+                        </div>
+
+                        <div>
+                            <label>Desde</label>
+                            <InputDate class="form-control" @bind-Value="fechaDesdeEmpacado" name="DataPickerDesde" />
+                        </div>
+
+                        <div>
+                            <label>Hasta</label>
+                            <InputDate class="form-control" @bind-Value="fechaHastaEmpacado" name="DataPickerDesde" />
+                        </div>
+                    </div>
+
+
+                    <InputSelect class="form-control col-2" @bind-Value="filtroEmpacado">
+                        <option value="1">ID</option>
+                        <option value="2">Concepto</option>
+                    </InputSelect>
+
+                    <div class="flex-fill mx-2">
+                        <label>Busqueda</label>
+                        <InputText class="form-control" @bind-Value="CriterioEmpacado" />
+                    </div>
+
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="BuscarEmpacado"><span
+                            class="oi oi-magnifying-glass"></span>Buscar</button>
+                </div>
+            </form>
+        </div>
+        <table class="table table-bordered" style="box-shadow: 1px 6px rgba(0, 0, 0, 0.2);">
+            <thead class="thead">
+                <tr class="table">
+                    <td><b>ID</b></td>
+                    <td><b>Concepto</b></td>
+                    <td><b>Fecha</b></td>
+                    <td><b>Producto producido</b></td>
+                    <td><b>Cantidad</b></td>
+                    <td><b>Peso total</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in listaEmpacado)
+                {
+                    <tr>
+                        <td>@item.ProductoEmpacadoId</td>
+                        <td>@item.Concepto</td>
+                        <td>@item.FechaExpiracion</td>
+                        <td>@item.ProductoProducido</td>
+                        <td>@item.Cantidad</td>
+                        <td>@item.PesoTotal</td>
+                        <td><a class="btn btn-sm btn-outline-primary oi oi-eye"
+                            href=@($"REmpaques/{item.ProductoEmpacadoId}")>Ver</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</EditForm>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+@code {
+    public string filtroProducto { get; set; } = "1";
+    public string CriterioProducto { get; set; } = "";
+    public DateTime fechaDesdeProducto = DateTime.Now;
+    public DateTime fechaHastaProducto = DateTime.Now;
+    public bool checkBoxFechaProducto = false;
+
+    public string filtroEmpacado { get; set; } = "1";
+    public string CriterioEmpacado { get; set; } = "";
+    public DateTime fechaDesdeEmpacado = DateTime.Now;
+    public DateTime fechaHastaEmpacado = DateTime.Now;
+    public bool checkBoxFechaEmpacado = false;
+
+
+    public List<Producto> listaProducto { get; set; } = new List<Producto>();
+    public List<ProductoEmpacado> listaEmpacado { get; set; } = new List<ProductoEmpacado>();
+
+    [Inject]
+    public ProductoEmpacadoBLL productoEmpacadoBLL { get; set; }
+
+    [Inject]
+    public ProductoBLL productoBLL { get; set; }
+
+    private void BuscarProducto()
+    {
+        if (checkBoxFechaProducto)
+        {
+            checkBoxFechaProducto = true;
+        }
+        else
+        {
+            checkBoxFechaProducto = false;
+        }
+
+        switch (filtroProducto)
+        {
+            case "1":
+                if (checkBoxFechaProducto == true && CriterioProducto != "")
+                {
+                    listaProducto = null;
+                    listaProducto = productoBLL.GetList(c => c.FechaExpiracion.Date >= fechaDesdeProducto && c.FechaExpiracion <=
+                    fechaHastaProducto && c.ProductoId
+                    == int.Parse(CriterioProducto));
+
+                }
+                else if (checkBoxFechaProducto == true && CriterioProducto == "")
+                {
+                    listaProducto = null;
+                    listaProducto = productoBLL.GetList(c => c.FechaExpiracion.Date >= fechaDesdeProducto && c.FechaExpiracion <=
+                    fechaHastaProducto);
+                }
+                else if (!checkBoxFechaProducto && CriterioProducto == "")
+                {
+                    listaProducto = null;
+                    listaProducto = productoBLL.GetList(p => true);
+                }
+                else
+                {
+                    listaProducto = null;
+                    listaProducto = productoBLL.GetList(p => p.ProductoId == int.Parse(CriterioProducto));
+                }
+                break;
+
+            case "2":
+                if (checkBoxFechaProducto == true && CriterioProducto != "")
+                {
+                    listaProducto = null;
+                    listaProducto = productoBLL.GetList(c => c.FechaExpiracion.Date >= fechaDesdeProducto && c.FechaExpiracion <=
+                    fechaHastaProducto &&
+                    c.Descripcion.ToLower().Contains(CriterioProducto.ToLower()));
+
+                }
+                else if (checkBoxFechaProducto == true && CriterioProducto == "")
+                {
+                    listaProducto = null;
+                    listaProducto = productoBLL.GetList(c => c.FechaExpiracion.Date >= fechaDesdeProducto && c.FechaExpiracion <=
+                    fechaHastaProducto);
+                }
+                else if (!checkBoxFechaProducto && CriterioProducto == "")
+                {
+                    listaProducto = null;
+                    listaProducto = productoBLL.GetList(p => true);
+                }
+                else
+                {
+                    listaProducto = null;
+                    listaProducto = productoBLL.GetList(p => p.Descripcion.ToLower().Contains(CriterioProducto.ToLower()));
+                }
+                break;
+        }
+    }
+
+    private void BuscarEmpacado()
+    {
+        if (checkBoxFechaEmpacado)
+        {
+            checkBoxFechaEmpacado = true;
+        }
+        else
+        {
+            checkBoxFechaEmpacado = false;
+        }
+
+        switch (filtroEmpacado)
+        {
+            case "1":
+                if (checkBoxFechaEmpacado == true && CriterioEmpacado != "")
+                {
+                    listaEmpacado = null;
+                    listaEmpacado = productoEmpacadoBLL.GetList(c => c.FechaExpiracion.Date >= fechaDesdeEmpacado && c.FechaExpiracion <=
+                    fechaHastaEmpacado
+                    &&
+                    c.ProductoEmpacadoId
+                    == int.Parse(CriterioEmpacado));
+
+                }
+                else if (checkBoxFechaEmpacado == true && CriterioEmpacado == "")
+                {
+                    listaEmpacado = null;
+                    listaEmpacado = productoEmpacadoBLL.GetList(c => c.FechaExpiracion.Date >= fechaDesdeEmpacado && c.FechaExpiracion <=
+                    fechaHastaEmpacado);
+                }
+                else if (!checkBoxFechaEmpacado && CriterioEmpacado == "")
+                {
+                    listaEmpacado = null;
+                    listaEmpacado = productoEmpacadoBLL.GetList(p => true);
+                }
+                else
+                {
+                    listaEmpacado = null;
+                    listaEmpacado = productoEmpacadoBLL.GetList(p => p.ProductoEmpacadoId == int.Parse(CriterioEmpacado));
+                }
+                break;
+
+            case "2":
+                if (checkBoxFechaEmpacado == true && CriterioEmpacado != "")
+                {
+                    listaEmpacado = null;
+                    listaEmpacado = productoEmpacadoBLL.GetList(c => c.FechaExpiracion.Date >= fechaDesdeEmpacado && c.FechaExpiracion <=
+                    fechaHastaEmpacado
+                    &&
+                    c.Concepto.ToLower().Contains(CriterioEmpacado.ToLower()));
+
+                }
+                else if (checkBoxFechaEmpacado == true && CriterioEmpacado == "")
+                {
+                    listaEmpacado = null;
+                    listaEmpacado = productoEmpacadoBLL.GetList(c => c.FechaExpiracion.Date >= fechaDesdeEmpacado && c.FechaExpiracion <=
+                    fechaHastaEmpacado);
+                }
+                else if (!checkBoxFechaEmpacado && CriterioEmpacado == "")
+                {
+                    listaEmpacado = null;
+                    listaEmpacado = productoEmpacadoBLL.GetList(p => true);
+                }
+                else
+                {
+                    listaEmpacado = null;
+                    listaEmpacado = productoEmpacadoBLL.GetList(p => p.Concepto.ToLower().Contains(CriterioEmpacado.ToLower()));
+                }
+                break;
+        }
+    }
+}
